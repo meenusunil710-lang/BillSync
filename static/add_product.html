@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Product | BillSync</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+  <div class="bg-white p-8 rounded-2xl shadow-lg w-96">
+    <h1 class="text-2xl font-bold text-indigo-700 mb-6 text-center">Add New Product</h1>
+    <form id="addProductForm" class="space-y-4">
+      <input type="text" id="name" placeholder="Product Name" required class="border p-2 rounded w-full">
+      <input type="number" id="price" placeholder="Price" required class="border p-2 rounded w-full">
+      <input type="number" id="gst" placeholder="GST (%)" required class="border p-2 rounded w-full">
+      <input type="number" id="stock" placeholder="Stock Quantity" required class="border p-2 rounded w-full">
+      <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white w-full py-2 rounded font-semibold">Add Product</button>
+      <button type="button" onclick="window.location.href='index.html'" class="bg-gray-500 hover:bg-gray-600 text-white w-full py-2 rounded font-semibold mt-2">Back</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("addProductForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const price = document.getElementById("price").value;
+      const gst = document.getElementById("gst").value;
+      const stock = document.getElementById("stock").value;
+
+      const res = await fetch("/addProduct", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `name=${encodeURIComponent(name)}&price=${price}&gst=${gst}&stock=${stock}`
+      });
+
+      if (res.ok) {
+        alert("✅ Product added successfully!");
+        window.location.href = "index.html";
+      } else {
+        alert("❌ Failed to add product.");
+      }
+    });
+  </script>
+</body>
+</html>
